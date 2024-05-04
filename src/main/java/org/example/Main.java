@@ -3,49 +3,22 @@ package org.example;
 import org.junit.jupiter.api.Test;
 
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Properties;
+import java.io.UnsupportedEncodingException;
 
 public class Main {
 
 
-    public static void main(String[] args) throws MessagingException {
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.socketFactory.port", "465");
-        properties.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.port", "465");
-        properties.put("mail.smtp.starttls", "true");
-
-        String mail = "xg7mails@gmail.com";
-        String senha = "uma senha :D";
-
-        Session session = Session.getDefaultInstance(properties,
-                new Authenticator() {
-            @Override
-                    protected PasswordAuthentication getPasswordAuthentication()
-                    {
-                        return new PasswordAuthentication(mail,senha);
-                    }
-                });
-
-        session.setDebug(true);
-
-        Address[] to = InternetAddress.parse("alexmello.andrade@gmail.com");
+    public static void main(String[] args) throws MessagingException, UnsupportedEncodingException {
+        EmailUtils.loadSession();
+        new Mensagem("Teste",
+                "Olha oq tive que fazer pra mandar isso kkkk" +
+                "<img src=\"https://cdn.discordapp.com/attachments/1104248431200964619/1232843673939742721/image.png?ex=662aeea4&is=66299d24&hm=ebe9b2021907f10b7c144d847498182fa030bd3f73e899d0939d3bb9d75aff84&\" />" +
+                "<img src=\"https://cdn.discordapp.com/attachments/1104248431200964619/1232843342015103007/image.png?ex=662aee55&is=66299cd5&hm=09a8fde97aecaa9df636135a06be16d3b0523e682629b90bdaa8a001e86ef584&\" />"
+                + "Ainda anexei este arquivo").anexarArquivo("D:\\Estudos\\CursoJava\\Email\\src\\main\\java\\org\\example\\slaoq.pdf").enviarEmail("vytroquitor@gmail.com");
 
 
-        Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("xg7mails@gmail.com"));
-
-        message.setRecipients(Message.RecipientType.TO, to);
-        message.setSubject("Olá, este é meu primeiro email eviado por código, resumindo, sou eu papai :D");
-        message.setText("Meu primeiro email sendo enviado pelo java :P, se quiser eu faço um spam kkkkkkkkk");
-
-        Transport.send(message);
         System.out.println("Pronto...");
     }
 }
